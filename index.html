@@ -3,11 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Pro Dashboard</title>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <style>
 body {
   background:#f4f4f4;
@@ -88,7 +85,6 @@ body {
 }
 </style>
 </head>
-
 <body>
 
 <div class="container-fluid">
@@ -109,9 +105,7 @@ body {
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark px-3 mb-3">
 <button class="btn btn-light d-md-none" onclick="toggleSidebar()">☰</button>
-
 <span class="text-white fw-bold">Pro Dashboard v3</span>
-
 <div class="ms-auto d-flex gap-2">
 <input class="form-control form-control-sm" placeholder="Search">
 <button class="btn btn-light btn-sm" onclick="showPage(5)">Profil</button>
@@ -121,63 +115,50 @@ body {
 
 <!-- HOME -->
 <div id="page1">
-
 <div class="row g-3">
-
-<div class="col-md-4">
-<div class="card p-3 text-center shadow-sm">
-<h6>Trenutno vreme</h6>
-<h3 id="clock"></h3>
-<small id="date"></small>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="card p-3 shadow-sm text-center">
-<h6>Kalendar aktivnosti</h6>
-<div class="d-flex flex-wrap justify-content-center" id="mini-cal"></div>
-<small>crveno = aktivno</small>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="card p-3 shadow-sm">
-<h6>Dodaj Alarm</h6>
-
-<input class="form-control mb-2" id="name" placeholder="Naziv">
-<input type="time" class="form-control mb-2" id="time">
-
-<select class="form-control mb-2" id="active">
-<option value="true">Aktivan</option>
-<option value="false">Neaktivan</option>
-</select>
-
-<textarea class="form-control mb-2" placeholder="Napomena"></textarea>
-
-<button class="btn btn-danger w-100" onclick="addAlarm()">Sačuvaj</button>
-</div>
-</div>
-
+  <div class="col-md-4">
+    <div class="card p-3 text-center shadow-sm">
+      <h6>Trenutno vreme</h6>
+      <h3 id="clock"></h3>
+      <small id="date"></small>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm text-center">
+      <h6>Kalendar aktivnosti</h6>
+      <div class="d-flex flex-wrap justify-content-center" id="mini-cal"></div>
+      <small>crveno = aktivno</small>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm">
+      <h6>Dodaj Alarm</h6>
+      <input class="form-control mb-2" id="alarmName" placeholder="Naziv">
+      <input type="time" class="form-control mb-2" id="alarmTime">
+      <textarea class="form-control mb-2" id="alarmNote" placeholder="Napomena"></textarea>
+      <select class="form-control mb-2" id="alarmActive">
+        <option value="true">Aktivan</option>
+        <option value="false">Neaktivan</option>
+      </select>
+      <button class="btn btn-danger w-100" onclick="addAlarm()">Sačuvaj</button>
+    </div>
+  </div>
 </div>
 
 <div class="row mt-3 g-3">
-
-<div class="col-md-6">
-<div class="card p-3 shadow-sm">
-<h6>Dnevni alarmi</h6>
-<div id="alarms"></div>
+  <div class="col-md-6">
+    <div class="card p-3 shadow-sm">
+      <h6>Dnevni alarmi</h6>
+      <div id="alarms"></div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card p-3 shadow-sm">
+      <h6>Statistika aktivnosti</h6>
+      <div style="height:150px;background:#eee;border-radius:10px;"></div>
+    </div>
+  </div>
 </div>
-</div>
-
-<div class="col-md-6">
-<div class="card p-3 shadow-sm">
-<h6>Statistika aktivnosti</h6>
-<div style="height:150px;background:#eee;border-radius:10px;"></div>
-</div>
-</div>
-
-</div>
-
 </div>
 
 <!-- ALARMI -->
@@ -211,12 +192,9 @@ body {
 <h6>Profil korisnika</h6>
 <div class="text-center">
 <div style="width:80px;height:80px;background:#ccc;border-radius:50%;margin:auto"></div>
-
 <p class="mt-2" id="userNameDisplay">Korisnik</p>
-
 <input class="form-control mb-2" id="profileName" placeholder="Ime">
 <input type="password" class="form-control mb-2" id="profilePass" placeholder="Password">
-
 <button class="btn btn-danger w-100" onclick="saveProfile()">Sačuvaj</button>
 </div>
 </div>
@@ -233,9 +211,7 @@ let user = JSON.parse(localStorage.getItem("user")) || {name:"Korisnik", pass:""
 
 /* NAV */
 function showPage(p){
-  for(let i=1;i<=5;i++){
-    document.getElementById("page"+i).style.display="none";
-  }
+  for(let i=1;i<=5;i++) document.getElementById("page"+i).style.display="none";
   document.getElementById("page"+p).style.display="block";
 }
 
@@ -251,7 +227,7 @@ setInterval(()=>{
   date.innerText=d.toLocaleDateString();
 },1000);
 
-/* MINI CAL */
+/* MINI CALENDAR */
 for(let i=1;i<=7;i++){
   let d=document.createElement("div");
   d.className="calendar-day";
@@ -260,7 +236,7 @@ for(let i=1;i<=7;i++){
   document.getElementById("mini-cal").appendChild(d);
 }
 
-/* MONTH */
+/* MONTH CALENDAR */
 for(let i=1;i<=30;i++){
   let d=document.createElement("div");
   d.className="calendar-day";
@@ -271,9 +247,9 @@ for(let i=1;i<=30;i++){
 
 /* RENDER */
 function render(){
-
   localStorage.setItem("alarms",JSON.stringify(alarms));
   localStorage.setItem("therapies",JSON.stringify(therapies));
+  localStorage.setItem("user",JSON.stringify(user));
 
   let aHTML="";
   alarms.forEach((a,i)=>{
@@ -281,7 +257,8 @@ function render(){
     <div class="d-flex justify-content-between align-items-center mb-2 border p-2 rounded">
       <div>
         <strong>${a.name}</strong><br>
-        <small>${a.time}</small>
+        <small>${a.time}</small><br>
+        <small>${a.note || ""}</small>
       </div>
       <div>
         <button class="btn btn-sm ${a.active?'btn-success':'btn-secondary'}" onclick="toggleAlarm(${i})">
@@ -310,18 +287,23 @@ function render(){
   });
 
   document.getElementById("therapy").innerHTML=tHTML;
-
   document.getElementById("userNameDisplay").innerText=user.name;
 }
 
-/* ALARM */
+/* ALARMS */
 function addAlarm(){
-  alarms.push({
-    name: name.value,
-    time: time.value,
-    active: active.value==="true"
-  });
+  let name = document.getElementById("alarmName").value;
+  let time = document.getElementById("alarmTime").value;
+  let note = document.getElementById("alarmNote").value;
+  let active = document.getElementById("alarmActive").value==="true";
+
+  if(!name || !time) return alert("Unesi naziv i vreme alarma");
+
+  alarms.push({name,time,note,active});
   render();
+  document.getElementById("alarmName").value="";
+  document.getElementById("alarmTime").value="";
+  document.getElementById("alarmNote").value="";
 }
 
 function toggleAlarm(i){
@@ -359,24 +341,16 @@ function editTherapy(i,value){
 function registerUser(){
   let name = prompt("Unesi ime:");
   let pass = prompt("Unesi password:");
-
-  if(!name || !pass) return;
-
-  user.name=name;
-  user.pass=pass;
-
-  localStorage.setItem("user",JSON.stringify(user));
+  if(!name || !pass) return alert("Ime i password su obavezni");
+  user={name,pass};
   render();
 }
 
 function saveProfile(){
   let name=document.getElementById("profileName").value;
   let pass=document.getElementById("profilePass").value;
-
   if(name) user.name=name;
   if(pass) user.pass=pass;
-
-  localStorage.setItem("user",JSON.stringify(user));
   render();
 }
 
