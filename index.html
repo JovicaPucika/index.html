@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Pro Dashboard</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 body {
-  background:#f3f3f3;
+  background:#f4f4f4;
   font-family: 'Segoe UI';
 }
 
@@ -28,18 +29,19 @@ body {
   border-radius:8px;
   text-decoration:none;
   color:black;
+  font-weight:500;
 }
 
 .sidebar a.active {
-  background:#ddd;
+  background:#e5e5e5;
 }
 
 /* HEADER */
 .navbar {
-  background:#d32f2f !important;
+  background:#C62828 !important;
 }
 
-/* CARDS */
+/* CARD */
 .card {
   border:none;
   border-radius:12px;
@@ -61,6 +63,7 @@ body {
   align-items:center;
   justify-content:center;
   margin:3px;
+  cursor:pointer;
 }
 
 .calendar-day.active {
@@ -118,7 +121,7 @@ body {
 <!-- HOME -->
 <div id="page1">
 
-<div class="row">
+<div class="row g-3">
 
 <div class="col-md-4">
 <div class="card p-3 text-center shadow-sm">
@@ -156,7 +159,7 @@ body {
 
 </div>
 
-<div class="row mt-3">
+<div class="row mt-3 g-3">
 
 <div class="col-md-6">
 <div class="card p-3 shadow-sm">
@@ -167,7 +170,7 @@ body {
 
 <div class="col-md-6">
 <div class="card p-3 shadow-sm">
-<h6>Statistika</h6>
+<h6>Statistika aktivnosti</h6>
 <div style="height:150px;background:#eee;border-radius:10px;"></div>
 </div>
 </div>
@@ -187,9 +190,9 @@ body {
 <!-- TERAPIJA -->
 <div id="page3" style="display:none;">
 <div class="card p-3 shadow-sm">
-<h6>Lista terapija</h6>
+<h6>Plan terapije</h6>
 <div id="therapy"></div>
-<button class="btn btn-danger mt-2" onclick="addTherapy()">+ Dodaj</button>
+<button class="btn btn-danger mt-2" onclick="addTherapy()">+ Dodaj terapiju</button>
 </div>
 </div>
 
@@ -204,10 +207,10 @@ body {
 <!-- PROFIL -->
 <div id="page5" style="display:none;">
 <div class="card p-3 shadow-sm" style="max-width:400px;">
-<h6>Profil</h6>
+<h6>Profil korisnika</h6>
 <div class="text-center">
 <div style="width:80px;height:80px;background:#ccc;border-radius:50%;margin:auto"></div>
-<p>Ime korisnika</p>
+<p class="mt-2">Korisnik</p>
 <input class="form-control mb-2" placeholder="Ime">
 <input type="password" class="form-control mb-2" placeholder="Password">
 <button class="btn btn-danger w-100">Sačuvaj</button>
@@ -220,15 +223,15 @@ body {
 </div>
 
 <script>
-let alarms = [];
-let therapy = [];
+let alarms = JSON.parse(localStorage.getItem("alarms")) || [];
+let therapies = JSON.parse(localStorage.getItem("therapies")) || [];
 
 /* NAV */
 function showPage(p){
   for(let i=1;i<=5;i++){
-    document.getElementById("page"+i).style.display = "none";
+    document.getElementById("page"+i).style.display="none";
   }
-  document.getElementById("page"+p).style.display = "block";
+  document.getElementById("page"+p).style.display="block";
 }
 
 /* SIDEBAR */
@@ -238,75 +241,109 @@ function toggleSidebar(){
 
 /* CLOCK */
 setInterval(()=>{
-  let d = new Date();
-  document.getElementById("clock").innerText = d.toLocaleTimeString();
-  document.getElementById("date").innerText = d.toLocaleDateString();
+  let d=new Date();
+  clock.innerText=d.toLocaleTimeString();
+  date.innerText=d.toLocaleDateString();
 },1000);
 
 /* MINI CAL */
 for(let i=1;i<=7;i++){
-  let d = document.createElement("div");
+  let d=document.createElement("div");
   d.className="calendar-day";
   d.innerText=i;
   d.onclick=()=>d.classList.toggle("active");
-  document.getElementById("mini-cal").appendChild(d);
+  mini-cal.appendChild(d);
 }
 
 /* MONTH */
 for(let i=1;i<=30;i++){
-  let d = document.createElement("div");
+  let d=document.createElement("div");
   d.className="calendar-day";
   d.innerText=i;
   d.onclick=()=>d.classList.toggle("active");
-  document.getElementById("month").appendChild(d);
+  month.appendChild(d);
+}
+
+/* RENDER */
+function render(){
+  localStorage.setItem("alarms",JSON.stringify(alarms));
+  localStorage.setItem("therapies",JSON.stringify(therapies));
+
+  let aHTML="";
+  alarms.forEach((a,i)=>{
+    aHTML+=`
+    <div class="d-flex justify-content-between align-items-center mb-2 border p-2 rounded">
+      <div>
+        <strong>${a.name}</strong><br>
+        <small>${a.time}</small>
+      </div>
+      <div>
+        <button class="btn btn-sm ${a.active?'btn-success':'btn-secondary'}" onclick="toggleAlarm(${i})">
+          ${a.active?'ON':'OFF'}
+        </button>
+        <button class="btn btn-sm btn-outline-danger" onclick="deleteAlarm(${i})">Delete</button>
+      </div>
+    </div>`;
+  });
+
+  alarms.innerHTML=aHTML;
+  alarms2.innerHTML=aHTML;
+
+  let tHTML="";
+  therapies.forEach((t,i)=>{
+    tHTML+=`
+    <div class="d-flex justify-content-between align-items-center mb-2 border p-2 rounded">
+      <span>${t.name}</span>
+      <div>
+        <button class="btn btn-sm ${t.active?'btn-success':'btn-secondary'}" onclick="toggleTherapy(${i})">
+          ${t.active?'Aktivno':'Pauza'}
+        </button>
+        <button class="btn btn-sm btn-outline-danger" onclick="deleteTherapy(${i})">Delete</button>
+      </div>
+    </div>`;
+  });
+
+  therapy.innerHTML=tHTML;
 }
 
 /* ALARM */
 function addAlarm(){
-  let name=document.getElementById("name").value;
-  let time=document.getElementById("time").value;
-  let active=document.getElementById("active").value==="true";
-
-  alarms.push({name,time,active});
+  alarms.push({
+    name: name.value,
+    time: time.value,
+    active: active.value==="true"
+  });
   render();
 }
 
-function render(){
-  let html="";
-  alarms.forEach((a,i)=>{
-    html+=`
-    <div class="d-flex justify-content-between mb-2 border p-2 rounded">
-      <div>${a.name} (${a.time})</div>
-      <div>
-        <button class="btn btn-sm ${a.active?'btn-success':'btn-secondary'}"
-        onclick="toggle(${i})">${a.active?'Active':'Off'}</button>
-        <button class="btn btn-sm btn-outline-danger" onclick="del(${i})">Delete</button>
-      </div>
-    </div>`;
-  });
-  document.getElementById("alarms").innerHTML=html;
-  document.getElementById("alarms2").innerHTML=html;
-}
-
-function toggle(i){
+function toggleAlarm(i){
   alarms[i].active=!alarms[i].active;
   render();
 }
 
-function del(i){
+function deleteAlarm(i){
   alarms.splice(i,1);
   render();
 }
 
 /* THERAPY */
 function addTherapy(){
-  therapy.push("Nova terapija");
-  let html="";
-  therapy.forEach(t=>{
-    html+=`<div class="border p-2 mb-2 rounded">${t}</div>`;
-  });
-  document.getElementById("therapy").innerHTML=html;
+  therapies.push({name:"Nova terapija",active:true});
+  render();
 }
+
+function toggleTherapy(i){
+  therapies[i].active=!therapies[i].active;
+  render();
+}
+
+function deleteTherapy(i){
+  therapies.splice(i,1);
+  render();
+}
+
+/* INIT */
+render();
 </script>
 
 </body>
