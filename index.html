@@ -4,53 +4,74 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Health Dashboard</title>
+<title>Pro Dashboard v3</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body{background:#F3F4F6;font-family:sans-serif}
+
+/* GENERAL */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background:#F3F4F6;
+}
 
 /* SIDEBAR */
-.sidebar{
-background:#8B1E1E;
-min-height:100vh;
-padding:15px;
+.sidebar {
+    background:#8B1E1E;
+    min-height:100vh;
+    padding:1rem;
 }
-.sidebar a{
-display:block;
-background:#f8f9fa;
-padding:12px;
-margin-bottom:10px;
-border-radius:10px;
-text-decoration:none;
-color:black;
+
+.sidebar a {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#F7F7F7;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+    text-decoration:none;
+    color:black;
+    font-weight:500;
 }
-.sidebar a.active{background:#e5e5e5}
+
+.sidebar a.active { background:#E5E5E5; }
 
 /* HEADER */
-.topbar{
-background:#D32F2F;
-color:white;
-padding:10px 20px;
+.navbar {
+    border-radius:10px;
 }
 
 /* CARD */
-.box{
-background:#f8f9fa;
-border-radius:15px;
-padding:20px;
-border:1px solid #ddd;
+.card {
+    border-radius:15px;
+    border:1px solid #e0e0e0;
 }
 
-/* DOT */
-.dot{
-width:30px;height:30px;border-radius:50%;
-background:#ddd;display:flex;align-items:center;justify-content:center;margin:4px;font-size:12px;
+/* CALENDAR */
+.calendar-day {
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#ddd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:3px;
 }
-.dot.active{background:#8B1E1E;color:white}
+
+.calendar-day.active {
+    background:#8B1E1E;
+    color:white;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.sidebar { display:none; }
+}
 
 </style>
 </head>
@@ -58,167 +79,143 @@ background:#ddd;display:flex;align-items:center;justify-content:center;margin:4p
 <body>
 
 <div class="container-fluid">
-
-<!-- HEADER -->
-<div class="topbar d-flex justify-content-between align-items-center">
-
-<div class="d-flex align-items-center gap-2">
-<button class="btn btn-light d-md-none" data-bs-toggle="offcanvas" data-bs-target="#menu">
-☰
-</button>
-<b>DASHBOARD</b>
-</div>
-
-<div class="d-flex gap-2">
-<input class="form-control form-control-sm" placeholder="Search">
-<button class="btn btn-light btn-sm"><i class="bi bi-person"></i></button>
-</div>
-
-</div>
-
 <div class="row">
 
 <!-- SIDEBAR -->
-<div class="col-md-2 d-none d-md-block sidebar">
-<a onclick="showPage('home')" class="active">Home</a>
-<a onclick="showPage('alarm')">Alarmi</a>
-<a onclick="showPage('therapy')">Terapija</a>
-<a onclick="showPage('calendar')">Kalendar</a>
-<a onclick="showPage('profile')">Profil</a>
-</div>
+<nav class="col-md-2 sidebar d-none d-md-block">
 
-<!-- MOBILE -->
-<div class="offcanvas offcanvas-start" id="menu">
-<div class="offcanvas-body">
-<a onclick="showPage('home')">Home</a>
-<a onclick="showPage('alarm')">Alarmi</a>
-<a onclick="showPage('therapy')">Terapija</a>
-<a onclick="showPage('calendar')">Kalendar</a>
-<a onclick="showPage('profile')">Profil</a>
-</div>
-</div>
+<a class="active" data-target="desktop-1"><i class="bi bi-house"></i> Home</a>
+<a data-target="desktop-2"><i class="bi bi-bell"></i> Alarmi</a>
+<a data-target="desktop-3"><i class="bi bi-capsule"></i> Terapija</a>
+<a data-target="desktop-4"><i class="bi bi-calendar"></i> Kalendar</a>
+<a data-target="desktop-5"><i class="bi bi-person"></i> Profil</a>
+
+</nav>
 
 <!-- MAIN -->
-<div class="col-md-10 col-12 p-4">
+<main class="col-12 col-md-10">
 
-<!-- HOME -->
-<div id="home">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-3 px-3">
+
+<button class="btn btn-light d-md-none" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+☰
+</button>
+
+<a class="navbar-brand">Dashboard</a>
+
+<div class="ms-auto d-flex gap-2">
+<input class="form-control form-control-sm" placeholder="Search..." id="search-input">
+<button class="btn btn-light btn-sm" id="profile-btn"><i class="bi bi-person"></i></button>
+<button class="btn btn-dark btn-sm" id="register-btn">Register</button>
+<button class="btn btn-secondary btn-sm" id="dark-mode-toggle">Dark</button>
+</div>
+
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="offcanvas offcanvas-start" id="mobileMenu">
+<div class="offcanvas-body">
+<a data-target="desktop-1">Home</a>
+<a data-target="desktop-2">Alarmi</a>
+<a data-target="desktop-3">Terapija</a>
+<a data-target="desktop-4">Kalendar</a>
+<a data-target="desktop-5">Profil</a>
+</div>
+</div>
+
+<div id="main-content">
+
+<!-- DASHBOARD -->
+<div id="desktop-1">
 
 <div class="row g-3 mb-3">
 
-<div class="col-md-4 col-12">
-<div class="box text-center">
-<p>Sledeći obrok</p>
-<h4 id="time"></h4>
+<div class="col-12 col-md-4">
+<div class="card p-3 text-center">
+<h6>Sledeći obrok</h6>
+<h4 id="clock"></h4>
+<p id="date-text"></p>
 </div>
 </div>
 
-<div class="col-md-4 col-12">
-<div class="box text-center">
-<p>Kalendar</p>
-<div class="d-flex flex-wrap justify-content-center" id="mini"></div>
+<div class="col-12 col-md-4">
+<div class="card p-3 text-center">
+<h6>Kalendar</h6>
+<div class="d-flex flex-wrap justify-content-center" id="calendar-days"></div>
 </div>
 </div>
 
-<div class="col-md-4 col-12">
-<div class="box">
-<p>Dodaj alarm</p>
-<input class="form-control mb-2" placeholder="Naziv">
-<input type="time" class="form-control mb-2">
+<div class="col-12 col-md-4">
+<div class="card p-3">
+<h6>Dodaj alarm</h6>
+<form id="add-alarm-form">
+<input class="form-control mb-2" placeholder="Naziv" required>
+<input type="time" class="form-control mb-2" required>
 <textarea class="form-control mb-2"></textarea>
 <button class="btn btn-danger w-100">Sačuvaj</button>
+</form>
 </div>
 </div>
 
 </div>
 
 <div class="row g-3">
-<div class="col-md-6 col-12">
-<div class="box">
-<p>Dnevni alarmi</p><hr>
+
+<div class="col-12 col-md-6">
+<div class="card p-3">
+<h6>Dnevni alarmi</h6>
+<ul class="list-group" id="alarms-list"></ul>
 </div>
 </div>
 
-<div class="col-md-6 col-12">
-<div class="box">
-<p>Statistika</p>
-<canvas id="chart"></canvas>
+<div class="col-12 col-md-6">
+<div class="card p-3">
+<h6>Statistika</h6>
+<canvas id="activityChart"></canvas>
 </div>
 </div>
+
 </div>
 
 </div>
 
 <!-- ALARMI -->
-<div id="alarm" style="display:none">
-<div class="box">
-<p>Lista alarma</p>
-
-<div class="d-flex justify-content-between mb-2">
-<span>Doručak</span>
-<span>08:00 <span class="badge bg-danger">ON</span></span>
-</div>
-
-<div class="d-flex justify-content-between mb-2">
-<span>Ručak</span>
-<span>13:00 <span class="badge bg-secondary">OFF</span></span>
-</div>
-
-<div class="d-flex justify-content-between mb-2">
-<span>Večera</span>
-<span>19:00 <span class="badge bg-danger">ON</span></span>
-</div>
-
-<button class="btn btn-danger mt-2">+ Dodaj alarm</button>
+<div id="desktop-2" style="display:none;">
+<div class="card p-3">
+<h6>Lista alarma</h6>
+<ul class="list-group" id="alarms-list-2"></ul>
 </div>
 </div>
 
 <!-- TERAPIJA -->
-<div id="therapy" style="display:none">
-<div class="box">
-<p>Plan terapije</p>
-
-<div class="d-flex justify-content-between mb-2">
-<span>Insulin — jutarnja doza</span>
-<span class="badge bg-danger">Aktivno</span>
-</div>
-
-<div class="d-flex justify-content-between mb-2">
-<span>Metformin — večernja doza</span>
-<span class="badge bg-secondary">Pauza</span>
-</div>
-
-<button class="btn btn-danger mt-2">+ Dodaj terapiju</button>
+<div id="desktop-3" style="display:none;">
+<div class="card p-3">
+<h6>Terapija</h6>
+<ul class="list-group" id="therapy-list"></ul>
+<button class="btn btn-danger mt-2" id="add-therapy-btn">+ Dodaj</button>
 </div>
 </div>
 
 <!-- KALENDAR -->
-<div id="calendar" style="display:none">
-<div class="box">
-<p>Mesečni pregled</p>
-<div id="month"></div>
+<div id="desktop-4" style="display:none;">
+<div class="card p-3">
+<h6>Mesečni kalendar</h6>
+<div id="month-calendar" class="d-grid gap-2" style="grid-template-columns:repeat(7,1fr)"></div>
 </div>
 </div>
 
 <!-- PROFIL -->
-<div id="profile" style="display:none">
-<div class="box text-center">
-
-<div style="width:100px;height:100px;background:#ddd;border-radius:50%;margin:auto"></div>
-
-<h5 class="mt-3">Ime korisnika</h5>
-<p>Primarni korisnik</p>
-
-<div class="box mt-3">Podešavanja naloga</div>
-<div class="box mt-2">Notifikacije</div>
-<div class="box mt-2">Privatnost</div>
-
-<button class="btn btn-danger mt-3">Izloguj se</button>
-
+<div id="desktop-5" style="display:none;">
+<div class="card p-3 text-center">
+<div class="rounded-circle bg-secondary mx-auto mb-2" style="width:100px;height:100px;"></div>
+<h6 id="profile-name">Marko</h6>
+<p id="profile-pass">******</p>
 </div>
 </div>
 
 </div>
+</main>
 </div>
 </div>
 
@@ -226,39 +223,45 @@ background:#ddd;display:flex;align-items:center;justify-content:center;margin:4p
 
 <script>
 
-// NAV
-function showPage(id){
-document.querySelectorAll('#home,#alarm,#therapy,#calendar,#profile')
-.forEach(p=>p.style.display='none');
-document.getElementById(id).style.display='block';
-}
-
 // CLOCK
 setInterval(()=>{
-document.getElementById('time').innerText=
-new Date().toLocaleTimeString();
+document.getElementById('clock').innerText=new Date().toLocaleTimeString();
 },1000);
 
-// MINI CAL
+// NAVIGATION
+const links=document.querySelectorAll('[data-target]');
+const pages=document.querySelectorAll('#main-content > div');
+
+links.forEach(l=>{
+l.onclick=()=>{
+pages.forEach(p=>p.style.display='none');
+document.getElementById(l.dataset.target).style.display='block';
+};
+});
+
+// MINI CALENDAR
 for(let i=1;i<=14;i++){
 let d=document.createElement('div');
-d.className='dot'+([3,6,9,12].includes(i)?' active':'');
+d.className='calendar-day'+([3,6,9,12].includes(i)?' active':'');
 d.innerText=i;
-document.getElementById('mini').appendChild(d);
+document.getElementById('calendar-days').appendChild(d);
 }
 
 // MONTH
 for(let i=1;i<=30;i++){
 let d=document.createElement('div');
-d.className='dot'+(i%5===0?' active':'');
+d.className='calendar-day'+(i%5===0?' active':'');
 d.innerText=i;
-document.getElementById('month').appendChild(d);
+document.getElementById('month-calendar').appendChild(d);
 }
 
 // CHART
-new Chart(document.getElementById('chart'),{
+new Chart(document.getElementById('activityChart'),{
 type:'bar',
-data:{labels:['Alarmi','Terapije'],datasets:[{data:[1,1],backgroundColor:'#8B1E1E'}]},
+data:{
+labels:['Alarmi','Terapije'],
+datasets:[{data:[1,1],backgroundColor:'#8B1E1E'}]
+},
 options:{plugins:{legend:{display:false}}}
 });
 
