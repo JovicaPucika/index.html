@@ -4,117 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dashboard</title>
+<title>Health Dashboard</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
-
-body{
-    font-family:'Inter',sans-serif;
-    background:#F3F4F6;
-}
+body{background:#F3F4F6;font-family:sans-serif}
 
 /* SIDEBAR */
 .sidebar{
-    background:#8B1E1E;
-    min-height:100vh;
-    padding:20px 12px;
+background:#8B1E1E;
+min-height:100vh;
+padding:15px;
 }
-
-.sidebar-btn{
-    width:100%;
-    background:#F7F7F7;
-    border:none;
-    padding:12px 14px;
-    border-radius:12px;
-    margin-bottom:12px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:500;
+.sidebar a{
+display:block;
+background:#f8f9fa;
+padding:12px;
+margin-bottom:10px;
+border-radius:10px;
+text-decoration:none;
+color:black;
 }
-
-.sidebar-btn.active{
-    background:#E5E5E5;
-}
+.sidebar a.active{background:#e5e5e5}
 
 /* HEADER */
 .topbar{
-    background:#D32F2F;
-    padding:12px 20px;
-    color:white;
-    font-weight:600;
-}
-
-/* SEARCH */
-.search{
-    height:32px;
-    border-radius:8px;
-    border:none;
-    padding:0 10px;
+background:#D32F2F;
+color:white;
+padding:10px 20px;
 }
 
 /* CARD */
 .box{
-    background:#F7F7F7;
-    border-radius:16px;
-    padding:18px;
-    border:1px solid #E0E0E0;
+background:#f8f9fa;
+border-radius:15px;
+padding:20px;
+border:1px solid #ddd;
 }
 
-/* TITLE */
-.title{
-    font-size:14px;
-    color:#555;
-    margin-bottom:10px;
-}
-
-/* TIME */
-.time{
-    font-size:26px;
-    font-weight:600;
-}
-
-/* DOT CALENDAR */
+/* DOT */
 .dot{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:#E0E0E0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:4px;
-    font-size:12px;
+width:30px;height:30px;border-radius:50%;
+background:#ddd;display:flex;align-items:center;justify-content:center;margin:4px;font-size:12px;
 }
-
-.dot.active{
-    background:#8B1E1E;
-    color:white;
-}
-
-/* FORM */
-.form-control{
-    border-radius:10px;
-}
-
-/* BUTTON */
-.btn-danger{
-    background:#D32F2F;
-    border:none;
-    border-radius:10px;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-.sidebar{display:none;}
-}
+.dot.active{background:#8B1E1E;color:white}
 
 </style>
 </head>
@@ -126,10 +62,15 @@ body{
 <!-- HEADER -->
 <div class="topbar d-flex justify-content-between align-items-center">
 
-<span>DASHBOARD</span>
-
 <div class="d-flex align-items-center gap-2">
-<input class="search" placeholder="Search">
+<button class="btn btn-light d-md-none" data-bs-toggle="offcanvas" data-bs-target="#menu">
+☰
+</button>
+<b>DASHBOARD</b>
+</div>
+
+<div class="d-flex gap-2">
+<input class="form-control form-control-sm" placeholder="Search">
 <button class="btn btn-light btn-sm"><i class="bi bi-person"></i></button>
 </div>
 
@@ -138,114 +79,187 @@ body{
 <div class="row">
 
 <!-- SIDEBAR -->
-<div class="col-md-2 sidebar">
+<div class="col-md-2 d-none d-md-block sidebar">
+<a onclick="showPage('home')" class="active">Home</a>
+<a onclick="showPage('alarm')">Alarmi</a>
+<a onclick="showPage('therapy')">Terapija</a>
+<a onclick="showPage('calendar')">Kalendar</a>
+<a onclick="showPage('profile')">Profil</a>
+</div>
 
-<button class="sidebar-btn active"><i class="bi bi-house"></i> Home</button>
-<button class="sidebar-btn"><i class="bi bi-bell"></i> Alarmi</button>
-<button class="sidebar-btn"><i class="bi bi-capsule"></i> Terapija</button>
-<button class="sidebar-btn"><i class="bi bi-calendar"></i> Kalendar</button>
-<button class="sidebar-btn"><i class="bi bi-person"></i> Profil</button>
-
+<!-- MOBILE -->
+<div class="offcanvas offcanvas-start" id="menu">
+<div class="offcanvas-body">
+<a onclick="showPage('home')">Home</a>
+<a onclick="showPage('alarm')">Alarmi</a>
+<a onclick="showPage('therapy')">Terapija</a>
+<a onclick="showPage('calendar')">Kalendar</a>
+<a onclick="showPage('profile')">Profil</a>
+</div>
 </div>
 
 <!-- MAIN -->
 <div class="col-md-10 col-12 p-4">
 
-<!-- TOP ROW -->
-<div class="row g-4 mb-3">
+<!-- HOME -->
+<div id="home">
+
+<div class="row g-3 mb-3">
 
 <div class="col-md-4 col-12">
 <div class="box text-center">
-<div class="title">Sledeći obrok</div>
-<div class="time" id="time"></div>
+<p>Sledeći obrok</p>
+<h4 id="time"></h4>
 </div>
 </div>
 
 <div class="col-md-4 col-12">
 <div class="box text-center">
-<div class="title">Kalendar</div>
-<div class="d-flex flex-wrap justify-content-center" id="calendar"></div>
+<p>Kalendar</p>
+<div class="d-flex flex-wrap justify-content-center" id="mini"></div>
 </div>
 </div>
 
 <div class="col-md-4 col-12">
 <div class="box">
-<div class="title">Dodaj alarm</div>
-
+<p>Dodaj alarm</p>
 <input class="form-control mb-2" placeholder="Naziv">
 <input type="time" class="form-control mb-2">
-<textarea class="form-control mb-2" placeholder="Napomena"></textarea>
-
+<textarea class="form-control mb-2"></textarea>
 <button class="btn btn-danger w-100">Sačuvaj</button>
-
 </div>
 </div>
 
 </div>
 
-<!-- BOTTOM ROW -->
-<div class="row g-4">
-
+<div class="row g-3">
 <div class="col-md-6 col-12">
 <div class="box">
-<div class="title">Dnevni alarmi</div>
-<hr style="opacity:0.2">
+<p>Dnevni alarmi</p><hr>
 </div>
 </div>
 
 <div class="col-md-6 col-12">
 <div class="box">
-<div class="title">Statistika</div>
-<canvas id="chart" height="120"></canvas>
+<p>Statistika</p>
+<canvas id="chart"></canvas>
+</div>
 </div>
 </div>
 
 </div>
 
+<!-- ALARMI -->
+<div id="alarm" style="display:none">
+<div class="box">
+<p>Lista alarma</p>
+
+<div class="d-flex justify-content-between mb-2">
+<span>Doručak</span>
+<span>08:00 <span class="badge bg-danger">ON</span></span>
+</div>
+
+<div class="d-flex justify-content-between mb-2">
+<span>Ručak</span>
+<span>13:00 <span class="badge bg-secondary">OFF</span></span>
+</div>
+
+<div class="d-flex justify-content-between mb-2">
+<span>Večera</span>
+<span>19:00 <span class="badge bg-danger">ON</span></span>
+</div>
+
+<button class="btn btn-danger mt-2">+ Dodaj alarm</button>
+</div>
+</div>
+
+<!-- TERAPIJA -->
+<div id="therapy" style="display:none">
+<div class="box">
+<p>Plan terapije</p>
+
+<div class="d-flex justify-content-between mb-2">
+<span>Insulin — jutarnja doza</span>
+<span class="badge bg-danger">Aktivno</span>
+</div>
+
+<div class="d-flex justify-content-between mb-2">
+<span>Metformin — večernja doza</span>
+<span class="badge bg-secondary">Pauza</span>
+</div>
+
+<button class="btn btn-danger mt-2">+ Dodaj terapiju</button>
+</div>
+</div>
+
+<!-- KALENDAR -->
+<div id="calendar" style="display:none">
+<div class="box">
+<p>Mesečni pregled</p>
+<div id="month"></div>
+</div>
+</div>
+
+<!-- PROFIL -->
+<div id="profile" style="display:none">
+<div class="box text-center">
+
+<div style="width:100px;height:100px;background:#ddd;border-radius:50%;margin:auto"></div>
+
+<h5 class="mt-3">Ime korisnika</h5>
+<p>Primarni korisnik</p>
+
+<div class="box mt-3">Podešavanja naloga</div>
+<div class="box mt-2">Notifikacije</div>
+<div class="box mt-2">Privatnost</div>
+
+<button class="btn btn-danger mt-3">Izloguj se</button>
+
+</div>
+</div>
+
 </div>
 </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 
+// NAV
+function showPage(id){
+document.querySelectorAll('#home,#alarm,#therapy,#calendar,#profile')
+.forEach(p=>p.style.display='none');
+document.getElementById(id).style.display='block';
+}
+
 // CLOCK
 setInterval(()=>{
-document.getElementById('time').innerText =
+document.getElementById('time').innerText=
 new Date().toLocaleTimeString();
 },1000);
 
-// CALENDAR (TAČAN RASPORED KAO FIGMA)
-const cal=document.getElementById('calendar');
+// MINI CAL
 for(let i=1;i<=14;i++){
-const d=document.createElement('div');
+let d=document.createElement('div');
 d.className='dot'+([3,6,9,12].includes(i)?' active':'');
 d.innerText=i;
-cal.appendChild(d);
+document.getElementById('mini').appendChild(d);
 }
 
-// CHART (minimal style kao figma)
+// MONTH
+for(let i=1;i<=30;i++){
+let d=document.createElement('div');
+d.className='dot'+(i%5===0?' active':'');
+d.innerText=i;
+document.getElementById('month').appendChild(d);
+}
+
+// CHART
 new Chart(document.getElementById('chart'),{
 type:'bar',
-data:{
-labels:['Alarmi','Terapije'],
-datasets:[{
-data:[0,0],
-backgroundColor:'#8B1E1E',
-borderRadius:6
-}]
-},
-options:{
-plugins:{legend:{display:false}},
-scales:{
-y:{
-beginAtZero:true,
-grid:{color:'#eee'}
-},
-x:{
-grid:{display:false}
-}
-}
-}
+data:{labels:['Alarmi','Terapije'],datasets:[{data:[1,1],backgroundColor:'#8B1E1E'}]},
+options:{plugins:{legend:{display:false}}}
 });
 
 </script>
