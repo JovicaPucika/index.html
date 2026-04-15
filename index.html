@@ -1,354 +1,310 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Dashboard</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body {
-  background:#f4f4f4;
-  font-family: 'Segoe UI';
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-/* SIDEBAR */
-.sidebar {
-  background:#8B1E1E;
-  min-height:100vh;
-  padding:15px;
-}
+    <style>
 
-.sidebar a {
-  display:block;
-  background:white;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:8px;
-  text-decoration:none;
-  color:black;
-  font-weight:500;
-  cursor:pointer;
-}
+        body {
+            background: #f4f4f4;
+            font-family: Segoe UI;
+            margin: 0;
+        }
 
-.sidebar a.active {
-  background:#e5e5e5;
-}
+        .top-header {
+            height: 50px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            border-bottom: 1px solid #ddd;
+        }
 
-/* HEADER */
-.navbar {
-  background:#C62828 !important;
-}
+        .sidebar {
+            width: 220px;
+            background: #8B1E1E;
+            min-height: 100vh;
+        }
 
-/* CARD */
-.card {
-  border:none;
-  border-radius:12px;
-}
+        .nav-item {
+            display: block;
+            background: white;
+            color: #8B1E1E;
+            margin: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
 
-/* BUTTON */
-.btn-danger {
-  background:#8B1E1E;
-  border:none;
-}
+        .nav-item.active {
+            transform: scale(1.05);
+        }
 
-/* CALENDAR */
-.calendar-day {
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  background:#eee;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:3px;
-  cursor:pointer;
-}
+        .card {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            background: white;
+        }
 
-.calendar-day.active {
-  background:#8B1E1E;
-  color:white;
-}
+        .alarm-row {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
 
-/* MOBILE */
-@media(max-width:768px){
-  .sidebar {
-    position:fixed;
-    left:-100%;
-    width:200px;
-    z-index:1000;
-    transition:0.3s;
-  }
+        .pill-on {
+            background: #8B1E1E;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
-  .sidebar.show {
-    left:0;
-  }
-}
-</style>
+        .pill-off {
+            background: #cccccc;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn-red {
+            background: #8B1E1E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        #clock {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            text-align: center;
+        }
+
+        .cal-day {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .cal-day.active {
+            background: #ffcccc;
+            border: 2px solid #8B1E1E;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #dddddd;
+            margin: auto;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+            }
+            .d-flex {
+                flex-direction: column;
+            }
+        }
+
+    </style>
 </head>
+
 <body>
 
-<div class="container-fluid">
-<div class="row">
-
-<!-- SIDEBAR -->
-<div class="col-md-2 sidebar" id="sidebar">
-<a class="active" onclick="showPage(1)">Home</a>
-<a onclick="showPage(2)">Alarmi</a>
-<a onclick="showPage(3)">Terapija</a>
-<a onclick="showPage(4)">Kalendar</a>
-<a onclick="showPage(5)">Profil</a>
-</div>
-
-<!-- MAIN -->
-<div class="col-md-10">
-
-<!-- NAVBAR -->
-<nav class="navbar navbar-dark px-3 mb-3">
-<button class="btn btn-light d-md-none" onclick="toggleSidebar()">☰</button>
-<span class="text-white fw-bold">Pro Dashboard v3</span>
-<div class="ms-auto d-flex gap-2">
-<input class="form-control form-control-sm" placeholder="Search">
-<button class="btn btn-light btn-sm" onclick="showPage(5)">Profil</button>
-<button class="btn btn-dark btn-sm" onclick="registerUser()">Register</button>
-</div>
-</nav>
-
-<!-- HOME -->
-<div id="page1">
-<div class="row g-3">
-  <div class="col-md-4">
-    <div class="card p-3 text-center shadow-sm">
-      <h6>Trenutno vreme</h6>
-      <h3 id="clock"></h3>
-      <small id="date"></small>
+    <div class="top-header">
+        <span style="font-weight:700; letter-spacing:2px;">HEADER</span>
+        <div class="d-flex gap-2 align-items-center">
+            <div style="background:#f0f0f0; border-radius:6px; padding:3px 8px;">
+                🔍 <input style="border:none; background:none; outline:none; width:80px; font-size:12px;" placeholder="Search">
+            </div>
+            <span style="background:#8B1E1E; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Joca</span>
+        </div>
     </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card p-3 shadow-sm text-center">
-      <h6>Kalendar aktivnosti</h6>
-      <div class="d-flex flex-wrap justify-content-center" id="mini-cal"></div>
-      <small>crveno = aktivno</small>
+
+    <div class="d-flex">
+
+        <div class="sidebar">
+            <div class="text-white text-center py-3 fw-bold">SIDEBAR</div>
+            <a class="nav-item active" onclick="showPage(1,this)">Home</a>
+            <a class="nav-item" onclick="showPage(2,this)">Alarmi</a>
+            <a class="nav-item" onclick="showPage(3,this)">Terapija</a>
+            <a class="nav-item" onclick="showPage(4,this)">Kalendar</a>
+            <a class="nav-item" onclick="showPage(5,this)">Profil</a>
+        </div>
+
+        <div class="flex-grow-1">
+
+            <div style="background:#8B1E1E; color:white; padding:8px 15px; font-weight:700;">DASHBOARD</div>
+
+            <div class="p-4">
+
+                <div id="page1" class="page-content">
+
+                    <div class="row g-4">
+
+                        <div class="col-lg-7 col-12">
+                            <div class="card p-4 text-center">
+                                <small class="text-muted">Sledeći alarm</small>
+                                <div id="clock"></div>
+                            </div>
+
+                            <div class="card p-4 mt-3">
+                                <h6>Ostalo za danas</h6>
+                                <div class="alarm-row">
+                                    <span>Lek</span>
+                                    <span class="pill-on">ON</span>
+                                </div>
+                                <div class="alarm-row">
+                                    <span>Trening</span>
+                                    <span class="pill-off">OFF</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-12">
+                            <div class="card p-4">
+                                <h6>Dodaj alarm</h6>
+                                <input class="form-control mb-2" placeholder="Naziv">
+                                <input type="time" class="form-control mb-3">
+                                <button class="btn-red">SAČUVAJ</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="page2" class="page-content" style="display:none;">
+                    <div class="card p-4">
+                        <h6>Lista alarma</h6>
+                        <div class="alarm-row">
+                            <span>Doručak</span>
+                            <span class="pill-on">ON</span>
+                        </div>
+                        <div class="alarm-row">
+                            <span>Ručak</span>
+                            <span class="pill-off">OFF</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page3" class="page-content" style="display:none;">
+                    <div class="card p-4">
+                        <h6>Plan terapije</h6>
+                        <div class="alarm-row">
+                            <span>Vitamin C</span>
+                            <span class="pill-on">Aktivno</span>
+                        </div>
+                        <div class="alarm-row">
+                            <span>Antibiotik</span>
+                            <span class="pill-off">Pauza</span>
+                        </div>
+                        <button class="btn-red mt-3">+ Dodaj terapiju</button>
+                    </div>
+                </div>
+
+                <div id="page4" class="page-content" style="display:none;">
+                    <div class="card p-4">
+                        <h6>Kalendar</h6>
+                        <div class="cal-grid mt-3">
+                            <div class="cal-day">1</div>
+                            <div class="cal-day active">2</div>
+                            <div class="cal-day">3</div>
+                            <div class="cal-day active">4</div>
+                            <div class="cal-day">5</div>
+                            <div class="cal-day">6</div>
+                            <div class="cal-day active">7</div>
+                            <div class="cal-day">8</div>
+                            <div class="cal-day active">9</div>
+                            <div class="cal-day">10</div>
+                            <div class="cal-day">11</div>
+                            <div class="cal-day active">12</div>
+                            <div class="cal-day">13</div>
+                            <div class="cal-day">14</div>
+                            <div class="cal-day active">15</div>
+                            <div class="cal-day">16</div>
+                            <div class="cal-day">17</div>
+                            <div class="cal-day active">18</div>
+                            <div class="cal-day">19</div>
+                            <div class="cal-day">20</div>
+                            <div class="cal-day active">21</div>
+                            <div class="cal-day">22</div>
+                            <div class="cal-day active">23</div>
+                            <div class="cal-day">24</div>
+                            <div class="cal-day">25</div>
+                            <div class="cal-day active">26</div>
+                            <div class="cal-day">27</div>
+                            <div class="cal-day">28</div>
+                            <div class="cal-day active">29</div>
+                            <div class="cal-day">30</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page5" class="page-content" style="display:none;">
+                    <div class="card p-4 text-center">
+                        <div class="avatar"></div>
+                        <h5 class="mt-2">Ime korisnika</h5>
+                        <div class="mt-4 text-start">
+                            <div class="form-control mb-2">Podešavanja naloga</div>
+                            <div class="form-control mb-2">Notifikacije</div>
+                            <div class="form-control mb-2">Privatnost</div>
+                        </div>
+                        <button class="btn-red mt-3">Izmeni</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card p-3 shadow-sm">
-      <h6>Dodaj Alarm</h6>
-      <input class="form-control mb-2" id="alarmName" placeholder="Naziv">
-      <input type="time" class="form-control mb-2" id="alarmTime">
-      <textarea class="form-control mb-2" id="alarmNote" placeholder="Napomena"></textarea>
-      <select class="form-control mb-2" id="alarmActive">
-        <option value="true">Aktivan</option>
-        <option value="false">Neaktivan</option>
-      </select>
-      <button class="btn btn-danger w-100" onclick="addAlarm()">Sačuvaj</button>
-    </div>
-  </div>
-</div>
 
-<div class="row mt-3 g-3">
-  <div class="col-md-6">
-    <div class="card p-3 shadow-sm">
-      <h6>Dnevni alarmi</h6>
-      <div id="alarms"></div>
-    </div>
-  </div>
+    <script>
 
-<!-- ALARMI -->
-<div id="page2" style="display:none;">
-<div class="card p-3 shadow-sm">
-<h6>Lista alarma</h6>
-<div id="alarms2"></div>
-</div>
-</div>
+        function showPage(n, el) {
+            document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
+            document.getElementById('page' + n).style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
 
-<!-- TERAPIJA -->
-<div id="page3" style="display:none;">
-<div class="card p-3 shadow-sm">
-<h6>Plan terapije</h6>
-<div id="therapy"></div>
-<button class="btn btn-danger mt-2" onclick="addTherapy()">+ Dodaj terapiju</button>
-</div>
-</div>
+        function updateClock() {
+            document.getElementById('clock').textContent = new Date().toLocaleTimeString('sr-RS');
+        }
 
-<!-- KALENDAR -->
-<div id="page4" style="display:none;">
-<div class="card p-3 shadow-sm">
-<h6>Mesečni kalendar</h6>
-<div class="d-grid" style="grid-template-columns:repeat(7,1fr)" id="month"></div>
-</div>
-</div>
+        setInterval(updateClock, 1000);
+        updateClock();
 
-<!-- PROFIL -->
-<div id="page5" style="display:none;">
-<div class="card p-3 shadow-sm" style="max-width:400px;">
-<h6>Profil korisnika</h6>
-<div class="text-center">
-<div style="width:80px;height:80px;background:#ccc;border-radius:50%;margin:auto"></div>
-<p class="mt-2" id="userNameDisplay">Korisnik</p>
-<input class="form-control mb-2" id="profileName" placeholder="Ime">
-<input type="password" class="form-control mb-2" id="profilePass" placeholder="Password">
-<button class="btn btn-danger w-100" onclick="saveProfile()">Sačuvaj</button>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-</div>
-
-<script>
-let alarms = JSON.parse(localStorage.getItem("alarms")) || [];
-let therapies = JSON.parse(localStorage.getItem("therapies")) || [];
-let user = JSON.parse(localStorage.getItem("user")) || {name:"Korisnik", pass:""};
-
-/* NAV */
-function showPage(p){
-  for(let i=1;i<=5;i++) document.getElementById("page"+i).style.display="none";
-  document.getElementById("page"+p).style.display="block";
-}
-
-/* SIDEBAR */
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("show");
-}
-
-/* CLOCK */
-setInterval(()=>{
-  let d=new Date();
-  clock.innerText=d.toLocaleTimeString();
-  date.innerText=d.toLocaleDateString();
-},1000);
-
-/* MINI CALENDAR */
-for(let i=1;i<=7;i++){
-  let d=document.createElement("div");
-  d.className="calendar-day";
-  d.innerText=i;
-  d.onclick=()=>d.classList.toggle("active");
-  document.getElementById("mini-cal").appendChild(d);
-}
-
-/* MONTH CALENDAR */
-for(let i=1;i<=30;i++){
-  let d=document.createElement("div");
-  d.className="calendar-day";
-  d.innerText=i;
-  d.onclick=()=>d.classList.toggle("active");
-  document.getElementById("month").appendChild(d);
-}
-
-/* RENDER */
-function render(){
-  localStorage.setItem("alarms",JSON.stringify(alarms));
-  localStorage.setItem("therapies",JSON.stringify(therapies));
-  localStorage.setItem("user",JSON.stringify(user));
-
-  let aHTML="";
-  alarms.forEach((a,i)=>{
-    aHTML+=`
-    <div class="d-flex justify-content-between align-items-center mb-2 border p-2 rounded">
-      <div>
-        <strong>${a.name}</strong><br>
-        <small>${a.time}</small><br>
-        <small>${a.note || ""}</small>
-      </div>
-      <div>
-        <button class="btn btn-sm ${a.active?'btn-success':'btn-secondary'}" onclick="toggleAlarm(${i})">
-          ${a.active?'ON':'OFF'}
-        </button>
-        <button class="btn btn-sm btn-outline-danger" onclick="deleteAlarm(${i})">Delete</button>
-      </div>
-    </div>`;
-  });
-
-  document.getElementById("alarms").innerHTML=aHTML;
-  document.getElementById("alarms2").innerHTML=aHTML;
-
-  let tHTML="";
-  therapies.forEach((t,i)=>{
-    tHTML+=`
-    <div class="d-flex justify-content-between align-items-center mb-2 border p-2 rounded">
-      <input class="form-control me-2" value="${t.name}" onchange="editTherapy(${i}, this.value)">
-      <div>
-        <button class="btn btn-sm ${t.active?'btn-success':'btn-secondary'}" onclick="toggleTherapy(${i})">
-          ${t.active?'Aktivno':'Pauza'}
-        </button>
-        <button class="btn btn-sm btn-outline-danger" onclick="deleteTherapy(${i})">Delete</button>
-      </div>
-    </div>`;
-  });
-
-  document.getElementById("therapy").innerHTML=tHTML;
-  document.getElementById("userNameDisplay").innerText=user.name;
-}
-
-/* ALARMS */
-function addAlarm(){
-  let name = document.getElementById("alarmName").value;
-  let time = document.getElementById("alarmTime").value;
-  let note = document.getElementById("alarmNote").value;
-  let active = document.getElementById("alarmActive").value==="true";
-
-  if(!name || !time) return alert("Unesi naziv i vreme alarma");
-
-  alarms.push({name,time,note,active});
-  render();
-  document.getElementById("alarmName").value="";
-  document.getElementById("alarmTime").value="";
-  document.getElementById("alarmNote").value="";
-}
-
-function toggleAlarm(i){
-  alarms[i].active=!alarms[i].active;
-  render();
-}
-
-function deleteAlarm(i){
-  alarms.splice(i,1);
-  render();
-}
-
-/* THERAPY */
-function addTherapy(){
-  therapies.push({name:"Nova terapija",active:true});
-  render();
-}
-
-function toggleTherapy(i){
-  therapies[i].active=!therapies[i].active;
-  render();
-}
-
-function deleteTherapy(i){
-  therapies.splice(i,1);
-  render();
-}
-
-function editTherapy(i,value){
-  therapies[i].name=value;
-  render();
-}
-
-/* USER */
-function registerUser(){
-  let name = prompt("Unesi ime:");
-  let pass = prompt("Unesi password:");
-  if(!name || !pass) return alert("Ime i password su obavezni");
-  user={name,pass};
-  render();
-}
-
-function saveProfile(){
-  let name=document.getElementById("profileName").value;
-  let pass=document.getElementById("profilePass").value;
-  if(name) user.name=name;
-  if(pass) user.pass=pass;
-  render();
-}
-
-/* INIT */
-render();
-</script>
+    </script>
 
 </body>
 </html>
