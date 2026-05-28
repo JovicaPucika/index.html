@@ -29,6 +29,79 @@
         <div class="flex-grow-1">
             <div style="background:#8B1E1E; color:white; padding:9px 15px; font-weight:700;">DASHBOARD - POČETNA</div>
             <div class="p-4">
+                
+                <div id="mojKarusel" class="carousel slide mb-4 shadow-sm rounded" data-bs-ride="carousel">
+                    <div class="carousel-inner rounded">
+                        <div class="carousel-item active">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika1-mala.jpg">
+                                <img src="slika1-velika.jpg" class="d-block w-100" alt="Slika 1">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika2-mala.jpg">
+                                <img src="slika2-velika.jpg" class="d-block w-100" alt="Slika 2">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika3-mala.jpg">
+                                <img src="slika3-velika.jpg" class="d-block w-100" alt="Slika 3">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika4-mala.jpg">
+                                <img src="slika4-velika.jpg" class="d-block w-100" alt="Slika 4">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika5-mala.jpg">
+                                <img src="slika5-velika.jpg" class="d-block w-100" alt="Slika 5">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika6-mala.jpg">
+                                <img src="slika6-velika.jpg" class="d-block w-100" alt="Slika 6">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika7-mala.jpg">
+                                <img src="slika7-velika.jpg" class="d-block w-100" alt="Slika 7">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika8-mala.jpg">
+                                <img src="slika8-velika.jpg" class="d-block w-100" alt="Slika 8">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika9-mala.jpg">
+                                <img src="slika9-velika.jpg" class="d-block w-100" alt="Slika 9">
+                            </picture>
+                        </div>
+                        <div class="carousel-item">
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="slika10-mala.jpg">
+                                <img src="slika10-velika.jpg" class="d-block w-100" alt="Slika 10">
+                            </picture>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#mojKarusel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Prethodna</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#mojKarusel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sledeća</span>
+                    </button>
+                </div>
                 <div class="row g-4">
                     <div class="col-lg-7 col-12">
                         <div class="card p-4 text-center">
@@ -54,6 +127,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function updateClock() {
             const clockEl = document.getElementById('clock');
