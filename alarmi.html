@@ -29,16 +29,80 @@
         <div class="flex-grow-1">
             <div style="background:#8B1E1E; color:white; padding:9px 15px; font-weight:700;">DASHBOARD - SVI ALARMI</div>
             <div class="p-4">
-                <div class="card p-4">
-                    <h6 class="mb-3">Lista tvojih alarma</h6>
-                    <div class="alarm-row"><span>Doručak (08:00)</span> <span class="pill-on">ON</span></div>
-                    <div class="alarm-row"><span>Ručak (14:30)</span> <span class="pill-off">OFF</span></div>
-                    <div class="alarm-row"><span>Večera (19:00)</span> <span class="pill-on">ON</span></div>
-                    <button class="btn-red mt-3" onclick="location.href='index.html'">+ Dodaj novi alarm</button>
+                
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card p-4 h-100">
+                            <h6 class="mb-3">Lista tvojih alarma</h6>
+                            <div class="alarm-row"><span>Doručak (08:00)</span> <span class="pill-on">ON</span></div>
+                            <div class="alarm-row"><span>Ručak (14:30)</span> <span class="pill-off">OFF</span></div>
+                            <div class="alarm-row"><span>Večera (19:00)</span> <span class="pill-on">ON</span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 mb-4">
+                        <div class="card p-4">
+                            <h6 class="mb-3 d-flex justify-content-between align-items-center">
+                                Napredno dodavanje alarma
+                            </h6>
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">Naziv (Tekst)</label>
+                                    <input type="text" class="form-control" placeholder="Unesi ime alarma">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Snooze vreme u minutima (Broj)</label>
+                                    <input type="number" class="form-control" min="1" max="60" value="5">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Zakazani datum (Datum)</label>
+                                    <input type="date" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Dodatna poruka (Duži tekst)</label>
+                                    <textarea class="form-control" rows="2" placeholder="Ova poruka se prikazuje kad alarm zvoni..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Melodija (Izbor od ponuđenog)</label>
+                                    <select class="form-select">
+                                        <option selected>Otvori da izabereš melodiju</option>
+                                        <option value="1">Jutarnji petlić</option>
+                                        <option value="2">Klasika - Betoven</option>
+                                        <option value="3">Digitalno zvono</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Jačina zvuka (Opseg)</label>
+                                    <input type="range" class="form-range" min="0" max="100" id="jacinaZvuka">
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="vibracijaCheck">
+                                    <label class="form-check-label" for="vibracijaCheck">
+                                        Uključi vibraciju (Čekboks)
+                                    </label>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label d-block">Ponavljanje (Radio dugme)</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="ponavljanje" id="radioJednom" value="jednom" checked>
+                                        <label class="form-check-label" for="radioJednom">Samo jednom</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="ponavljanje" id="radioSvakiDan" value="svakidan">
+                                        <label class="form-check-label" for="radioSvakiDan">Svaki dan</label>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-red w-100">+ Dodaj novi alarm</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
